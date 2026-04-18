@@ -440,7 +440,7 @@
       A URI — <em>luz</em>, em hebraico — cria campanhas de Google Ads que colocam você na frente de quem procura ajuda agora, e sites autorais, fiéis à sua abordagem clínica. Tudo dentro do que a OPP e o CFP permitem — porque marketing sério respeita a profissão que serve.
     </div>
 
-    <a href="https://wa.link/vzn0xo" target="_blank" rel="noopener" class="cta" onclick="trackWhatsApp()">
+    <a href="https://wa.link/vzn0xo" rel="noopener" class="cta" onclick="trackWhatsApp(event)">
       <span>ACENDER CONSULTÓRIO</span>
       <svg class="cta-losango" viewBox="0 0 20 20" width="12" height="12">
         <path d="M 10 2 L 17 10 L 10 18 L 3 10 Z" fill="currentColor"/>
@@ -455,12 +455,22 @@
 
 <script>
   // ============ CONVERSÃO WHATSAPP ============
-  function trackWhatsApp() {
+  function trackWhatsApp(e) {
+    e.preventDefault();
+    var destino = e.currentTarget.href;
     gtag('event', 'conversion', {
       'send_to': 'AW-18101734629/9dUiCOKLqJ4cEOWZyrdD',
       'value': 1.0,
-      'currency': 'EUR'
+      'currency': 'EUR',
+      'transport_type': 'beacon',
+      'event_callback': function() {
+        window.open(destino, '_blank', 'noopener');
+      }
     });
+    // fallback: abre mesmo se o gtag demorar
+    setTimeout(function() {
+      window.open(destino, '_blank', 'noopener');
+    }, 1000);
   }
 
   // ============ INTERAÇÃO DA CENA ============
